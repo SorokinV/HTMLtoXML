@@ -12,6 +12,11 @@ printDebug  = False; #True;
 printDebug1 = False
 
 #--------------------------------------------------------------------
+#
+#  !!!! don't correct
+#
+#--------------------------------------------------------------------
+
 def getInt (source) :
         dictTran = "".maketrans("0123456789","0123456789",
                                 "qwertyuiop[]asdfghjkl;'zxcvbnm,./"+
