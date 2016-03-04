@@ -213,6 +213,32 @@ class TestWellHTML(unittest.TestCase):
         result = p.getResult();
         self.assertEqual(result,uflr)
 
+    def test_ATTR5(self):
+
+        ufl = "<html>a1<html1 xx=1 xx=2 xx=3>a2<h2 xx=5></html1></html>"
+        uflr= "<html><html1 xx=1><h2 xx=\"5\"></h2>a2</html1>a1</html>"
+        p=wellHTML();
+        p.tagsTop = [('html',[],[])];
+#        p.writeXMLtext("<userinfo>");
+#        p.writeXMLtext("</userinfo>");
+        p.feed(ufl); p.close();
+        
+        result = p.getResult();
+        self.assertEqual(result,uflr)
+
+    def test_ATTR6(self):
+
+        ufl = "<html>a1<html1 xx=1 xx=2 xx='3' /></html>"
+        uflr= "<html><html1 xx=1/>a1</html>"
+        p=wellHTML();
+        p.tagsTop = [('html',[],[])];
+#        p.writeXMLtext("<userinfo>");
+#        p.writeXMLtext("</userinfo>");
+        p.feed(ufl); p.close();
+        
+        result = p.getResult();
+        self.assertEqual(result,uflr)
+
     def test_Top1(self):
 
         ufl = "<html><html></html></html>"

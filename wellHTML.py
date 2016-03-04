@@ -12,17 +12,12 @@ printDebug  = False; #True;
 printDebug1 = False
 
 #--------------------------------------------------------------------
-#
-#  !!!! don't correct
-#
-#--------------------------------------------------------------------
-
 def getInt (source) :
         dictTran = "".maketrans("0123456789","0123456789",
                                 "qwertyuiop[]asdfghjkl;'zxcvbnm,./"+
                                 "QWERTYUIOP[]ASDFGHJKL;'ZXCVBNM,./"+
-                                "йцукенгшщзхъфывапролджэячсмитьбюё"+
-                                "ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮЁ"+
+                                "Р№С†СѓРєРµРЅРіС€С‰Р·С…СЉС„С‹РІР°РїСЂРѕР»РґР¶СЌСЏС‡СЃРјРёС‚СЊР±СЋС‘"+
+                                "Р™Р¦РЈРљР•РќР“РЁР©Р—РҐРЄР¤Р«Р’РђРџР РћР›Р”Р–Р­РЇР§РЎРњР�РўР¬Р‘Р®РЃ"+
                                 "`!@#$%^&*()_+-=|\\/");
         result = source.translate(dictTran);
         if (len(result)==0) : result = '0';
@@ -103,19 +98,29 @@ class wellHTML (HTMLParser):
     def setIndent (self,OkIndent): self.OkCRLFIndent = OkIndent and self.OkCRLF;
     def getIndent (self)         : return(self.OkCRLFIndent);
 
+# 
+# updates 2016-03-05 : don't regenerate dublicate attributes in function writeXML1 and writeXMLb
+#
+
     def writeXML1(self,tag,attrs=[]) :
         if self.OkCRLFIndent : self.result += "".rjust(self.indentStep*self.tagTable," ")
-        self.result += '<?'+self.getXMLW(tag); 
+        self.result += '<?'+self.getXMLW(tag);
+        aLast = [] 
         for a in attrs :
-            if a[1]!=None : self.result += " "+self.getXMLW(a[0])+'="'+self.getXMLW(a[1])+'"';
+            if (a[1]!=None) and (a[0] not in aLast) : 
+                self.result += " "+self.getXMLW(a[0])+'="'+self.getXMLW(a[1])+'"';
+                aLast.append(a[0])
         self.result += "?>";
         if self.OkCRLF : self.result += "\n"
 
     def writeXMLb(self,tag,attrs=[]) :
         if self.OkCRLFIndent : self.result += "".rjust(self.indentStep*self.tagTable," ")
         self.result += '<'+self.getXMLW(tag); 
+        aLast = [] 
         for a in attrs :
-            if a[1]!=None : self.result += " "+self.getXMLW(a[0])+'="'+self.getXMLW(a[1])+'"';
+            if (a[1]!=None) and (a[0] not in aLast) : 
+                self.result += " "+self.getXMLW(a[0])+'="'+self.getXMLW(a[1])+'"';
+                aLast.append(a[0])
 #######     if a[1]==None : self.result += " "+a[0]; # Defining that this is not weel-known 07/06/2015
         self.result += ">";
         if self.OkCRLF : self.result += "\n"
@@ -349,3 +354,11 @@ def XMLDetail (xmlStr) :
 
 if  (__name__ == "__main__") :
         
+    rf1='c://boba//programs//pyton//Far//Datas/BulletinX/10-5-sot-sobstvennost-na-saharnom-kljuche-35785502.html'
+    rf1='c://boba//programs//pyton//Far//Datas/Bulletin/10-5-sot-sobstvennost-na-saharnom-kljuche-35785502.html'
+
+    xml = HTMLtoXML("./Datas/Temp/x.html","./Datas/Temp/xml.html",True,True);
+    xml = HTMLtoXML(rf1,"./Datas/Temp/xml1.html",True,True);
+#    print(xml)
+    adr = XMLDetail(xml);
+    print(adr)
