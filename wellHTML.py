@@ -4,11 +4,11 @@ import xml.parsers.expat
 import html.parser
 import json
 import datetime
-import random
+
 
 from html.parser import HTMLParser
 
-printDebug  = False; #True;
+printDebug  = False; # True;
 printDebug1 = False
 
 #--------------------------------------------------------------------
@@ -204,10 +204,11 @@ class wellHTML (HTMLParser):
         return OK
     
     def handle_starttag (self, tag, attrs):
-        if printDebug : print ("starttag:",tag,attrs)
+        #if printDebug : print ("starttag:",tag,attrs)
         if (self.OkTagNoWork(tag,attrs)) : return;
         if (self.tagTable>0) :
             self.tagTable +=1;
+            if printDebug : print ("starttag:(",self.tagTable,")",tag,attrs)
             self.tagStack.append(tag);
             self.tagAttrs.append(attrs);
             self.tagDatas.append("");
@@ -216,6 +217,7 @@ class wellHTML (HTMLParser):
             
         if (self.OkTagTop(tag,attrs))&(len(self.tagStack)==0) :
             self.tagTable=1; self.tagTop=tag; self.nCells+=1
+            if printDebug : print ("starttag:(",self.tagTable,")",tag,attrs)
             self.tagStack = [tag];
             self.tagAttrs = [attrs];
             self.tagDatas = [""];
@@ -229,11 +231,18 @@ class wellHTML (HTMLParser):
             
         return
     
+    #
+    # 05.03.2016
+    # TODO: May be get endtag from text, when not in tags stack. This is broken structure
+    #        Decision is off now. Only jumping broken structure now.
+    #
+    #
     def handle_endtag (self, tag) :
-        if printDebug : print ("endtag :",tag)
+        #if printDebug : print ("endtag :",tag)
         if (self.OkTagNoWork(tag,[])) : return;
         if (self.tagTable>0) :
             pTag = self.tagStack.pop();
+            if printDebug : print ("endtag :(",len(self.tagStack),")",tag," stack tag:",pTag)
             while not (pTag==tag) :
                 if printDebug1 : print("ending1",tag,pTag,self.tagTable)
                 if (len(self.tagStack)==0) : break;
@@ -354,11 +363,7 @@ def XMLDetail (xmlStr) :
 
 if  (__name__ == "__main__") :
         
-    rf1='c://boba//programs//pyton//Far//Datas/BulletinX/10-5-sot-sobstvennost-na-saharnom-kljuche-35785502.html'
-    rf1='c://boba//programs//pyton//Far//Datas/Bulletin/10-5-sot-sobstvennost-na-saharnom-kljuche-35785502.html'
-
     xml = HTMLtoXML("./Datas/Temp/x.html","./Datas/Temp/xml.html",True,True);
-    xml = HTMLtoXML(rf1,"./Datas/Temp/xml1.html",True,True);
 #    print(xml)
     adr = XMLDetail(xml);
     print(adr)
