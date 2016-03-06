@@ -233,7 +233,10 @@ class wellHTML (HTMLParser):
     
     #
     # 05.03.2016
-    # TODO: May be get endtag from text, when not in tags stack. This is broken structure
+    #
+    
+    # TODO May be get end-tag from text, when not in tags stack. This is broken structure
+    
     #        Decision is off now. Only jumping broken structure now.
     #
     #
