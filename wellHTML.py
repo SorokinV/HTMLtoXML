@@ -114,6 +114,7 @@ class wellHTML (HTMLParser):
         if self.OkCRLF : self.result += "\n"
 
     def writeXMLb(self,tag,attrs=[]) :
+        # ???? self.result += " "; # update 07/03/2016 add one blank before tag
         if self.OkCRLFIndent : self.result += "".rjust(self.indentStep*self.tagTable," ")
         self.result += '<'+self.getXMLW(tag); 
         aLast = [] 
@@ -126,6 +127,7 @@ class wellHTML (HTMLParser):
         if self.OkCRLF : self.result += "\n"
 
     def writeXMLe(self,tag,attrs=[],data="") :
+        # ???? self.result += " "; # update 07/03/2016 add one blank before tag
         if self.OkCRLFIndent : self.result += "".rjust(self.indentStep*(self.tagTable+1)," ")
         self.result += "</"+self.getXMLW(tag)+">";
         if self.OkCRLF : self.result += "\n"
