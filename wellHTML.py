@@ -41,15 +41,40 @@ def getInt (source) :
 #                      (without working from <skip> ... </skip>, for example: <script>)
 #     setTagsXML     - only this tags writing in result 
 #     
-#     all this function have list parameter  
+#     all this function have list parameter:  
+#        [tag,attr]  - where:
+#                           tag  == "any text", for example html, div, ...
+#                           attr == [(attr1,value1,join1),(attr2,value2,join2),...], 
+#                                     attrX  == class, href, align and so on
+#                                     valueX == "method", "center" and so on for this attrX
+#                                     joinX  -- don't use
+#     
+#    Class method's transforming any tag-text sequences in XML text next case:
+#     
+#    1. work begin with finding start tag (setTagsTop), <tagTop attr1=value1 attr2=value2 ... attrY=valueY>    
+#    2. work end with finding end tag </TagStartTop> (with 0 level stack) or end of file. End tags is adding 
+#        in result for all tags in stacks
+#    3. tags NoWork <nowork> and </nowork> don't work. Its don't set in stack, but text and inner tags
+#        may be working. For example <tagTop><nowork><inner>inner text</inner>text no work</nowork>
+#        will be work as following: <tagTop><inner>inner text</inner>text no work</tagTop>
+#    4. tags Skip <willBeSkip> and </willBeSkip> don't work. Its set in stack and text and inner tags
+#        not be working. For example <tagTop><willBeSkip><inner>inner text</inner>text no work</willBeSkip>
+#        will be work as following: <tagTop></tagTop>
+#    5. tags XML will be in output only. Another tags don't go in output result.
 #     
 #     
 #     
 #     
+#     getResult      - return result string, including output XML  
+#     
+#     setCRLF(True/False) - add or not after each XML tag \n, default False
+#     setIndent(True/False)   - add indent before tag. Common indent compute as IndentStep*<level tag number>, default(0)
 #     
 #     
 #     
 #     07/06/2015 - updating and testing
+#     09/03/2016 - fix some errors
+#     
 #     
 #--------------------------------------------------------------------
 
