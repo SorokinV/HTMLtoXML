@@ -203,7 +203,7 @@ class TestWellHTML(unittest.TestCase):
     def test_ATTR4(self):
 
         ufl = "<html a='&a&&'>&&&\"'</html>"
-        uflr= "<html a=\"&amp;a&amp;&amp;\">&amp; &amp; &amp; &qout;&apos;</html>"
+        uflr= "<html a=\"&amp;a&amp;&amp;\">&amp; &amp; &amp; &quot;&apos;</html>"
         p=wellHTML();
         p.tagsTop = [('html',[],[])];
 #        p.writeXMLtext("<userinfo>");
@@ -239,6 +239,32 @@ class TestWellHTML(unittest.TestCase):
         result = p.getResult();
         self.assertEqual(result,uflr)
 
+    def test_Entity1(self):
+
+        ufl = "<html><html>'''</html></html>"
+        uflr= "<html><html>&apos;&apos;&apos;</html></html>"
+        p=wellHTML(convert_charrefs=True);
+        p.tagsTop = [('html',[],[])];
+#        p.writeXMLtext("<userinfo>");
+#        p.writeXMLtext("</userinfo>");
+        p.feed(ufl); p.close();
+        
+        result = p.getResult();
+        self.assertEqual(result,uflr)
+        
+    def test_Entity2(self):
+
+        ufl = "<html><html>'''\"\"\"\"'</html></html>"
+        uflr= "<html><html>&apos;&apos;&apos;&quot;&quot;&quot;&quot;&apos;</html></html>"
+        p=wellHTML(convert_charrefs=True);
+        p.tagsTop = [('html',[],[])];
+#        p.writeXMLtext("<userinfo>");
+#        p.writeXMLtext("</userinfo>");
+        p.feed(ufl); p.close();
+        
+        result = p.getResult();
+        self.assertEqual(result,uflr)
+        
     def test_Top1(self):
 
         ufl = "<html><html></html></html>"

@@ -78,22 +78,22 @@ class wellHTML (HTMLParser):
     tagsXML      = [];
 
     result       = "";
-    OkCRLF       = True; # 08/03/2016 
+    OkCRLF       = False; # True; # 08/03/2016 
     OkCRLFIndent = False;
 
-    dictXMLwell  = { '>':"&gt;", '<':"&lt;", '&':'&amp;', '"':"&qout;", "'":"&apos;"}
+    dictXMLwell  = { '>':"&gt;", '<':"&lt;", '&':'&amp;', '"':"&quot;", "'":"&apos;"}
 
     def getXMLW (self, data)     :
         new = (((((data.replace('>',"&gt;")).
                   replace('<',"&lt;")).
                  replace('&','&amp;')).
-                replace('"',"&qout;")).
+                replace('"',"&quot;")).
                replace("'","&apos;"));
         return new;
         
     def getResult (self)         : return self.result;
     def setResult (self,result ) : self.result = result;
-    def setCRLF (self,CRLF)      : self.OkCRLF = True; # self.OkCRLF = CRLF; # 08/03/2016
+    def setCRLF (self,CRLF)      : self.OkCRLF = CRLF; # 08/03/2016
     def getCRLF (self)           : return(self.OkCRLF);
     def setIndent (self,OkIndent): self.OkCRLFIndent = OkIndent and self.OkCRLF;
     def getIndent (self)         : return(self.OkCRLFIndent);
